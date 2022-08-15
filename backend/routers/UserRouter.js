@@ -5,5 +5,6 @@ const service = new UserService();
 const router = express.Router();
 router.route("/").post(service.setUser);
 router.post("/login", service.authUser);
-router.route("/profile").get(protect, service.getUserProfile);
+router.route("/profile").get(protect, service.getUserProfile)
+.put(protect,service.updateUserProfile);
 export default router;

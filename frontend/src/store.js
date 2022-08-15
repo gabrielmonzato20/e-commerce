@@ -5,7 +5,12 @@ import {
   productReducer,
   productDetailReducer,
 } from "./reducers/product.reducers";
-import { userLoginReducer } from "./reducers/user.reducers.js";
+import {
+  userLoginReducer,
+  userRegisterReducer,
+  userDetailReducer,
+  userUpdateProfileReducer,
+} from "./reducers/user.reducers.js";
 
 import { carReducer } from "./reducers/car.reducers.js";
 
@@ -14,6 +19,9 @@ const reducer = combineReducers({
   productDetail: productDetailReducer,
   car: carReducer,
   userLogin: userLoginReducer,
+  userRegister: userRegisterReducer,
+  userDetail: userDetailReducer,
+  userUpdateProfile: userUpdateProfileReducer,
 });
 const midleware = [thunk];
 const CarItemFromLocalStore = localStorage.getItem("carItems")
@@ -22,9 +30,14 @@ const CarItemFromLocalStore = localStorage.getItem("carItems")
 const UserItemFromLocalStore = localStorage.getItem("userInfo")
   ? JSON.parse(localStorage.getItem("userInfo"))
   : null;
-
+const shippingAddressFromStorage = localStorage.getItem("shippingAddress")
+  ? JSON.parse(localStorage.getItem("shippingAddress"))
+  : {};
 const initState = {
-  car: { carItems: CarItemFromLocalStore },
+  car: {
+    carItems: CarItemFromLocalStore,
+    shippingAddress: shippingAddressFromStorage,
+  },
   userLogin: { userInfo: UserItemFromLocalStore },
 };
 const store = createStore(

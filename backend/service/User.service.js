@@ -67,6 +67,49 @@ class UserService {
       throw new Error(`User not found or error in the system`);
     }
   });
+  //@desc UPDATE USER PROFILE
+  //@route  PUT /api/users/profile
+  // @acess   Private
+  updateUserProfile = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user._id);
+	  if (user) {
+		  user.name = req.body.name || user.name ; 
+		  user.email = req.body.email || user.email
+		  if(req.body.password){
+			user.password = req.body.password || user.password
+		  }
+		  const updateUser = await user.save()
+      res.json({
+        _id: updateUser._id,
+        email: updateUser.email,
+        name: updateUser.name,
+	token: generateToken(user._id),
+        isAdmin: user.isAdmin,
+
+      });
+    } else {
+      res.status(401);
+      throw new Error("User not found");
+    }
+  });
+  //@desc GET USER PROFILE
+  //@route  POST /api/users/profile
+  // @acess   Private
+  getUserProfile = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user._id);
+    if (user) {
+      res.json({
+        _id: user._id,
+        email: user.email,
+        name: user.name,
+        isAdmin: user.isAdmin,
+      });
+    } else {
+      res.status(401);
+      throw new Error("User not found");
+    }
+  });
+  
 }
 
 export default UserService;
